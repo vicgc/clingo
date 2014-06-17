@@ -1,4 +1,6 @@
-future-filesystem
+clingo
 =================
 
-A filesystem for future. Fast file searching as well as searching files on the basis of their content. Did I say that files get indexed during creation itself
+Another awesome Virtual Filesystem.
+clingo is a filesystem for future. It is a virtual filesystem that automatically indexes the files on creation or deletion. 
+
