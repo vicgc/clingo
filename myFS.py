@@ -148,10 +148,7 @@ class myFS(Operations):
 
         xapian_indexer.index({
                 'filename': path.split('/')[-1],
-                'filepath': path,
-                'description': '',
-                'tags': '',
-                'content': ''
+                'filepath': path
             })
         return os.close(fh)
 

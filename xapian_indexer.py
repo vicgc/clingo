@@ -22,10 +22,7 @@ def index(info):
 
 
 	# Fields that'll be indexed
-	description = info['description']
-	tags = info['tags']
 	filename = info['filename']
-	content = info['content']
 	identifier = genId(info['filepath'])
 
 
@@ -35,10 +32,7 @@ def index(info):
 
 
 	# Index fields with suitable prefixes so a field search could be done.
-	termgenerator.index_text(description, 1, 'S')
-	termgenerator.index_text(tags, 1, 'XD')
 	termgenerator.index_text(filename, 1, 'XO')
-	termgenerator.index_text(content, 1, 'XS')
 
 
 	# Create a blob data 
@@ -56,10 +50,7 @@ if __name__ == '__main__':
 
 	info = {
 		'filepath': '/home/khirod/ryuk.cpp',
-		'description': '',
-		'tags': '',
-		'filename': 'ryuk.cpp',
-		'content': 'Just kidding!!'
+		'filename': 'ryuk.cpp'
 	}
 
 	index(info)
