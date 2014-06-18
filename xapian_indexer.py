@@ -24,6 +24,7 @@ def index(info):
 	# Fields that'll be indexed
 	filename = info['filename']
 	identifier = genId(info['filepath'])
+	content = info['content']
 
 
 	# Create a document and tell the term generator to use this.
@@ -33,6 +34,7 @@ def index(info):
 
 	# Index fields with suitable prefixes so a field search could be done.
 	termgenerator.index_text(filename, 1, 'XO')
+	termgenerator.index_text(content, 1, 'XS')
 
 
 	# Create a blob data 

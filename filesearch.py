@@ -17,6 +17,7 @@ def search(querystring):
 	queryparser.add_prefix("description", 'S')
 	queryparser.add_prefix('tags', 'XD')
 	queryparser.add_prefix('filename', 'XO')
+	queryparser.add_prefix('content', 'XS')
 
 
 	# Parse the query
@@ -40,4 +41,4 @@ def search(querystring):
 
 if __name__ == '__main__':
 	name = raw_input('Enter file name: ')
-	search('filename:' + name)
+	search('content:' + name)

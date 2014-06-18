@@ -6,6 +6,7 @@ import os
 import sys
 import errno
 import xapian_indexer
+import contentIndexer
 
 from fuse import FUSE, FuseOSError, Operations
 
@@ -44,6 +45,7 @@ class myFS(Operations):
 
     def getattr(self, path, fh=None):
         print 'Invoking getattr'
+        print 'ROot is: ', self.root
         full_path = self._full_path(path)
         st = os.lstat(full_path)
         return dict((key, getattr(st, key)) for key in ('st_atime', 'st_ctime',
@@ -144,12 +146,20 @@ class myFS(Operations):
 
     def release(self, path, fh):
         print 'Invoking release ', path
-        print "I'm goind to index/re-index document at this path: ", path
+        #print "I'm goind to index/re-index document at this path: ", path
+        #print 'The full path is: ', os.path.abspath(self._full_path(path))
+        _abspath = os.path.abspath(self._full_path(path))
+        content = contentIndexer.getContent(_abspath)
+
+        if content == None:
+            content = ''
 
         xapian_indexer.index({
-                'filename': path.split('/')[-1],
-                'filepath': path
+                'filename': _abspath.split('/')[-1],
+                'filepath': _abspath,
+                'content': content
             })
+
         return os.close(fh)
 
     def fsync(self, path, fdatasync, fh):
