@@ -9,12 +9,10 @@ def genId(filePath):
 	return (hash_object.hexdigest())
 
 def index(info):
-
-	db_path = expanduser('~') + '/.clingo_db'
+	db_path = expanduser('~') + '/.clingodb'
 
 	# Create or open the database we're going to be writing to
 	db = xapian.WritableDatabase(db_path, xapian.DB_CREATE_OR_OPEN)
-
 
 	# Set up a TermGenerator that we'll use in indexing.
 	termgenerator = xapian.TermGenerator()
@@ -25,6 +23,8 @@ def index(info):
 	filename = info['filename']
 	identifier = genId(info['filepath'])
 	content = info['content']
+	tags = info['tags']
+	description = info['description']
 
 
 	# Create a document and tell the term generator to use this.
@@ -33,8 +33,10 @@ def index(info):
 
 
 	# Index fields with suitable prefixes so a field search could be done.
-	termgenerator.index_text(filename, 1, 'XO')
-	termgenerator.index_text(content, 1, 'XS')
+	termgenerator.index_text(filename, 1, 'XF')
+	termgenerator.index_text(content, 1, 'XC')
+	termgenerator.index_text(tags, 1, 'XT')
+	termgenerator.index_text(description, 1, 'XD')
 
 
 	# Create a blob data 

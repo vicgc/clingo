@@ -4,7 +4,7 @@ from os.path import expanduser
 from os.path import isfile
 
 def search(querystring):
-	db_path = expanduser('~') + '/.clingo_db'
+	db_path = expanduser('~') + '/.clingodb'
 
 	# Open the database we're going to search and set up the querystring.
 	db = xapian.Database(db_path)
@@ -14,10 +14,10 @@ def search(querystring):
 	queryparser = xapian.QueryParser()
 	queryparser.set_stemmer(xapian.Stem('en'))
 	queryparser.set_stemming_strategy(queryparser.STEM_SOME)
-	queryparser.add_prefix("description", 'S')
-	queryparser.add_prefix('tags', 'XD')
-	queryparser.add_prefix('filename', 'XO')
-	queryparser.add_prefix('content', 'XS')
+	queryparser.add_prefix("description", 'XD')
+	queryparser.add_prefix('tags', 'XT')
+	queryparser.add_prefix('filename', 'XF')
+	queryparser.add_prefix('content', 'XC')
 
 
 	# Parse the query
@@ -41,4 +41,4 @@ def search(querystring):
 
 if __name__ == '__main__':
 	name = raw_input('Enter file name: ')
-	search('content:' + name)
+	search(name)
