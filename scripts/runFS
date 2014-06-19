@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+import argparse
+from clingopackage.myFS import main
+from os.path import isdir
+from os.path import abspath
+
+def wrapmain():
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument("rootdir", help="root directory to be mounted.")
+	parser.add_argument("mountdir", help="mountpoint where root directory will be mounted.")
+
+	args = parser.parse_args()
+
+	if isdir(abspath(args.rootdir)) and isdir(abspath(args.mountdir)):
+		main(abspath(args.rootdir), abspath(args.mountdir))
+
+if __name__ == '__main__':
+	wrapmain()
