@@ -1,7 +1,5 @@
-clingo
+clingo `Currently works on: Python 2.7 only`
 =================
-
-`Currently works on: Python 2.7 only`
 
 clingo is a tool which I am writing to help me manage my files 
 efficiently.
@@ -41,7 +39,7 @@ Steps for running and indexing files via mountpoint
         runFS /path-to-dir-to-be-mounted /path-to-the-mount-point
         runFS /home/khirod/Public/dir /home/khirod/mnt
 
-2. Open a new terminal window and cd to the mountpoint. The contents of /home/khirod/Public/dir should now be mounted at mnt:
+2. Open a new terminal window and cd to the mountpoint. The contents of `/home/khirod/Public/dir` should now be mounted at mnt:
         
         cd /home/khirod/mnt
         nano Hello.txt
