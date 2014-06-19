@@ -16,6 +16,13 @@ Similarly when any file is deleted its data is removed from xapian index
 at that very instant.
 
 
+Installation
+================
+
+        virtualenv venv
+        source venv/bin/activate
+        python <source_to_clingo_dir> setup.py install
 
 
-
+Running 
+==================
