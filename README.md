@@ -18,6 +18,16 @@ Similarly when any file is deleted its data is removed from xapian index
 at that very instant.
 
 
+What I wish to integrate in future
+====================================
+
+   - writing plug-ins for indexing different kind of data files   (text files are supported, mp3 files and pdf are must have).
+   - pdf's can be indexed using `pdftotext` tool and indexing the obtained text file.  (might encounter some glitches)
+   - Index mp3 files and content should be searchable with mp3 metadata.   (should be really cool !!)
+   - GUI for tagging files, or maybe unity scope.   (awesome !!) 
+   
+
+
 Installation
 ================
 
