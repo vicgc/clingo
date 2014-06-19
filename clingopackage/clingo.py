@@ -16,17 +16,16 @@ def getIndexedContent(filename):
 	# if ~/.clingoconfig exists then
 	_clingoconfigpath = expanduser('~') + '/.clingoconfig'
 	if exists(_clingoconfigpath):
-		print 'Checking Existence'
 		f = open(_clingoconfigpath)
 		content = (f.read()).split(' ')
 
 		rootdir = content[0]
 		mntdir = content[1]
 
-		pos = (abspath(filename)).find(mntdir)
+		pos = _path.find(mntdir)
 
 		if pos != -1:
-			_path = rootdir + '/' + (abspath(filename))[len(mntdir):]
+			_path = rootdir + (abspath(filename))[len(mntdir):]
 
 
 	# We have the correct _path found here.

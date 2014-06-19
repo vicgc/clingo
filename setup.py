@@ -8,5 +8,5 @@ setup(
 		description = "just an experimental tool",
 		author = "Khirod Kant Naik",
 		url = "https://github.com/shinigamiryuk/clingo",
-		scripts = ["scripts/clingo", "scripts/runFS"],
+		scripts = ["scripts/clingo", "scripts/runFS", "scripts/clingosearch"],
 )

@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+
+import xapian
+import json
+import argparse
+from os.path import expanduser
+from os.path import isfile
+
+def search(querystring):
+	db_path = expanduser('~') + '/.clingodb'
+
+	# Open the database we're going to search and set up the querystring.
+	db = xapian.Database(db_path)
+
+
+	# Set up a QueryParser with a stemmer
+	queryparser = xapian.QueryParser()
+	queryparser.set_stemmer(xapian.Stem('en'))
+	queryparser.set_stemming_strategy(queryparser.STEM_SOME)
+	queryparser.add_prefix("description", 'XD')
+	queryparser.add_prefix('tags', 'XT')
+	queryparser.add_prefix('filename', 'XF')
+	queryparser.add_prefix('content', 'XC')
+
+
+	# Parse the query
+	query = queryparser.parse_query(querystring)
+
+
+	# Use an Enquire object on the database to run the query
+	enquire = xapian.Enquire(db)
+	enquire.set_query(query)
+
+	# And print out something about the matches
+	matches = []
+	for match in enquire.get_mset(0, 10000):
+		fields = json.loads(match.document.get_data())
+		matches.append(fields)
+
+	print '\nYour search returned these results'
+	print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+	print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+
+	ctr = 0
+	for res in matches:
+		print '\nResult #', ctr + 1
+
+		print '* File Name: ', res['filename']
+		print '* File Path: ', res['filepath']
+		print '* File Tags: ', res['tags']
+		print '* File Description: ', res['description']
+
+		ctr += 1
+
+
+def main():
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument('-n', '--name', help='search on the basis of file name.', action='store_true')
+	parser.add_argument('-d', '--desc', help='search on the basis of description.', action='store_true')
+	parser.add_argument('-t', '--tags', help='search on the basis of tags.', action='store_true')
+	parser.add_argument('-c', '--content', help='search on the basis of file content', action='store_true')
+
+	args = parser.parse_args()
+
+	try:
+		if args.name:
+			name = raw_input("Name To Be Searched: ")
+			search('filename:' + name)
+		elif args.desc:
+			desc = raw_input("Rough Description of Files: ")
+			search('description:' + desc)
+		elif args.tags:
+			tags = raw_input("Tags: ")
+			search('tags:' + tags)
+		elif args.content:
+			con = raw_input("content of text file [just some rough content that you remember]: ")
+			search('content:' + con)
+	except:
+		print '\nGracefully Exiting..'
+		return
+
+if __name__ == '__main__':
+	main()

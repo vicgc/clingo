@@ -189,7 +189,7 @@ def main(root, mountpoint):
         fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
         fd = open(_rootmntpath, 'w')
 
-        fd.write(os.path.abspath(root) + ' ' + os.path.abspath(mountpoint) + '\n')
+        fd.write(os.path.abspath(root) + ' ' + os.path.abspath(mountpoint))
         fd.close()
 
         FUSE(myFS(root), mountpoint, foreground=True)
