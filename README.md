@@ -35,7 +35,9 @@ Installation
    They are available in official Ubuntu repositories as well as in Arch package database.
    Most probably they should be available for Fedora as well.
 
-2. Create a virtual environment and install there using
+2. Install fusepy which is available here. https://github.com/terencehonles/fusepy
+
+3. Create a virtual environment and install there using
 
         virtualenv venv
         source venv/bin/activate
