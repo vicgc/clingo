@@ -1,5 +1,7 @@
-clingo `Currently works on: Python 2.7 only`
-=================
+clingo 
+===========
+
+`Currently works on: Python 2.7 only`
 
 clingo is a tool which I am writing to help me manage my files 
 efficiently.
