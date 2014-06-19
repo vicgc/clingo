@@ -6,6 +6,7 @@ import os
 import sys
 import errno
 import xapian
+import fcntl
 import xapian_indexer
 import contentIndexer
 from os.path import expanduser
@@ -174,8 +175,29 @@ class myFS(Operations):
         return self.flush(path, fh)
 
 
-def main(root, mountpoint):    
-    FUSE(myFS(root), mountpoint, foreground=True)
+def main(root, mountpoint):
+
+    # we do a locking procedure to ensure that only a single clingo filesystem is mounted.
+
+    _lockpath = expanduser('~') + '/.clingolock'
+    _rootmntpath = expanduser('~') + '/.clingoconfig'
+
+    try:
+        f = open(_lockpath, 'w')
+        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        fd = open(_rootmntpath, 'w')
+
+        fd.write(os.path.abspath(root) + ' ' + os.path.abspath(mountpoint) + '\n')
+        fd.close()
+
+        FUSE(myFS(root), mountpoint, foreground=True)
+        os.remove(_rootmntpath)
+        os.remove(_lockpath)
+
+    except IOError:
+        print 'Only one instance of clingo filesystem can be run.'
+        return
+
 
 if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])

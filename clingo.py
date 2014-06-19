@@ -1,23 +1,41 @@
 import argparse
 import hashlib
 import xapian
+import json
 
 from xapian_indexer import index
 from os.path import abspath
 from os.path import expanduser
 from os.path import isfile
+from os.path import exists
 
 def getIndexedContent(filename):
 
-	# this path may be filepath or mntpath
-	_path = abspath(filename)
+	_path = abspath(filename)	# final absolute path of the filename
+
+	# if ~/.clingoconfig exists then
+	_clingoconfigpath = expanduser('~') + '/.clingoconfig'
+	if exists(_clingoconfigpath):
+		print 'Checking Existence'
+		f = open(_clingoconfigpath)
+		content = (f.read()).split(' ')
+
+		rootdir = content[0]
+		mntdir = content[1]
+
+		pos = (abspath(filename)).find(mntdir)
+
+		if pos != -1:
+			_path = rootdir + '/' + (abspath(filename))[len(mntdir):]
+
+
+	# We have the correct _path found here.
+
+	# Get the hashed identifier
 	_uid = (hashlib.md5(_path.encode())).hexdigest()
 
 	db_path = expanduser('~') + '/.clingodb'
 	db = xapian.Database(db_path)
-
-	print '_abspath: ', _path
-	print '_uid: ', _uid
 
 	queryparser = xapian.QueryParser()
 	query = queryparser.parse_query(_uid)
@@ -25,11 +43,8 @@ def getIndexedContent(filename):
 	enquire = xapian.Enquire(db)
 	enquire.set_query(query)
 
-	print 'Here'
-
 	for match in enquire.get_mset(0, 1):
-		print 'Type of: ', type(match.document.get_data())
-		return (match.document.get_data())
+		return (json.loads((match.document.get_data())))
 
 
 def checkValidity(name, _type):
