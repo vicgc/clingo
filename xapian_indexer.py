@@ -3,10 +3,17 @@ import hashlib
 import json
 from os.path import expanduser
 
+
 # This function generates a unique identifier for each file.
 def genId(filePath):
 	hash_object = hashlib.md5(filePath.encode())
 	return (hash_object.hexdigest())
+
+
+def removeFromIndex(path):
+	db_path = expanduser('~') + '/.clingodb'
+	db = xapian.WritableDatabase(db_path, xapian.DB_CREATE_OR_OPEN)
+	db.delete_document(genId(path))
 
 def index(info):
 	db_path = expanduser('~') + '/.clingodb'

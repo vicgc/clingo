@@ -46,6 +46,8 @@ def getIndexedContent(filename):
 	for match in enquire.get_mset(0, 1):
 		return (json.loads((match.document.get_data())))
 
+	return None
+
 
 def checkValidity(name, _type):
 	if isfile(name) == False:
@@ -85,6 +87,11 @@ def main():
 		else:
 			# write indexing code
 			_newinfo = getIndexedContent(args.addtags)
+
+			if _newinfo == None:
+				print 'Have you indexed this file inside clingo?'
+				return
+
 			_newinfo['tags'] = tags
 			index(_newinfo)
 
@@ -97,6 +104,11 @@ def main():
 		else:
 			# write indexing code
 			_newinfo = getIndexedContent(args.adddescription)
+			
+			if _newinfo == None:
+				print 'Have you indexed this file inside clingo?'
+				return
+
 			_newinfo['description'] = desc
 			index(_newinfo)
 

@@ -7,10 +7,11 @@ import sys
 import errno
 import xapian
 import fcntl
-import xapian_indexer
 import contentIndexer
-from os.path import expanduser
 
+from os.path import expanduser
+from xapian_indexer import index
+from xapian_indexer import removeFromIndex
 from fuse import FUSE, FuseOSError, Operations
 
 
@@ -58,7 +59,7 @@ class myFS(Operations):
             if content == None:
                 content = ''
 
-            xapian_indexer.index({
+            index({
                 'filename': _abspath.split('/')[-1],
                 'filepath': _abspath,
                 'content': content,
@@ -115,6 +116,7 @@ class myFS(Operations):
 
     def unlink(self, path):
         print 'Invoking unlink', path
+        removeFromIndex(os.path.abspath(self._full_path(path)))
         return os.unlink(self._full_path(path))
 
     def symlink(self, target, name):
